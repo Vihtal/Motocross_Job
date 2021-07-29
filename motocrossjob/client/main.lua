@@ -48,8 +48,6 @@ function Message()
            TriggerServerEvent('esx_motocross:annonce',result)
             
         end
-
-
     end
   end)
   
@@ -116,7 +114,7 @@ function OpenMotocrossActionsMenu()
 
                   ESX.Game.SpawnVehicle(vehicleProps.model, Config.Zones.VehicleSpawnPoint.Pos, 270.0, function(vehicle)
                     ESX.Game.SetVehicleProperties(vehicle, vehicleProps)
-                    local playerPed = GetPlayerPed(-1)
+                    local playerPed = PlayerPedId()
                     TaskWarpPedIntoVehicle(playerPed,  vehicle,  -1)
                   end)
 
@@ -151,7 +149,7 @@ function OpenMotocrossActionsMenu()
                 for i=1, #elements, 1 do
                   if Config.MaxInService == -1 then
                     ESX.Game.SpawnVehicle(data.current.value, Config.Zones.VehicleSpawnPoint.Pos, 90.0, function(vehicle)
-                      local playerPed = GetPlayerPed(-1)
+                      local playerPed = PlayerPedId()
                       TaskWarpPedIntoVehicle(playerPed, vehicle, -1)
                     end)
                     break
@@ -159,7 +157,7 @@ function OpenMotocrossActionsMenu()
                     ESX.TriggerServerCallback('esx_service:enableService', function(canTakeService, maxInService, inServiceCount)
                       if canTakeService then
                         ESX.Game.SpawnVehicle(data.current.value, Config.Zones.VehicleSpawnPoint.Pos, 90.0, function(vehicle)
-                          local playerPed = GetPlayerPed(-1)
+                          local playerPed = PlayerPedId()
                           TaskWarpPedIntoVehicle(playerPed,  vehicle, -1)
                         end)
                       else
@@ -307,7 +305,7 @@ ESX.UI.Menu.CloseAll()
       
       if data.current.value == 'fix_vehicle' then
 
-        local playerPed = GetPlayerPed(-1)
+        local playerPed = PlayerPedId()
         local coords    = GetEntityCoords(playerPed)
 
         if IsAnyVehicleNearPoint(coords.x, coords.y, coords.z, 5.0) then
@@ -469,7 +467,7 @@ end
 
 RegisterNetEvent('esx_motocross:onFixkit')
 AddEventHandler('esx_motocross:onFixkit', function()
-  local playerPed = GetPlayerPed(-1)
+  local playerPed = PlayerPedId()
   local coords    = GetEntityCoords(playerPed)
 
   if IsAnyVehicleNearPoint(coords.x, coords.y, coords.z, 5.0) then
@@ -503,7 +501,7 @@ end)
 --end
 --
 --function getVehicleInDirection(coordFrom, coordTo)
---  local rayHandle = CastRayPointToPoint(coordFrom.x, coordFrom.y, coordFrom.z, coordTo.x, coordTo.y, coordTo.z, 10, GetPlayerPed(-1), 0)
+--  local rayHandle = CastRayPointToPoint(coordFrom.x, coordFrom.y, coordFrom.z, coordTo.x, coordTo.y, coordTo.z, 10, PlayerPedId(), 0)
 --  local a, b, c, d, vehicle = GetRaycastResult(rayHandle)
 --  return vehicle
 --end
@@ -532,7 +530,7 @@ AddEventHandler('esx_motocross:hasEnteredMarker', function(zone)
 
   if zone == 'VehicleDeleter' then
 
-    local playerPed = GetPlayerPed(-1)
+    local playerPed = PlayerPedId()
 
     if IsPedInAnyVehicle(playerPed,  false) then
 
@@ -560,7 +558,7 @@ Citizen.CreateThread(function()
 
     if PlayerData.job ~= nil and PlayerData.job.name == 'motocross' then
 
-      local coords = GetEntityCoords(GetPlayerPed(-1))
+      local coords = GetEntityCoords(PlayerPedId())
 
       for k,v in pairs(Config.Zones) do
         if(v.Type ~= -1 and GetDistanceBetweenCoords(coords, v.Pos.x, v.Pos.y, v.Pos.z, true) < Config.DrawDistance) then
@@ -578,7 +576,7 @@ Citizen.CreateThread(function()
   while true do
     Wait(0)
     if PlayerData.job ~= nil and PlayerData.job.name == 'motocross' then
-      local coords      = GetEntityCoords(GetPlayerPed(-1))
+      local coords      = GetEntityCoords(PlayerPedId())
       local isInMarker  = false
       local currentZone = nil
       for k,v in pairs(Config.Zones) do
